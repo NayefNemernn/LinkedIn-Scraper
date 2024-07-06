@@ -1,11 +1,10 @@
 const puppeteer = require('puppeteer');// import puppeteer
 const fs = require('fs'); // file system 
-async function scrapeJobs(searchQuery){
-    const browser  = await puppeteer.launch({headless: true});
+async function scrapeJobs(searchQuery) {
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
-
-const searchURL = `https://www.linkedin.com/jobs/search?keywords=${encodeURIComponent(searchQuery)}`;
+    const searchURL = `https://www.linkedin.com/jobs/search?keywords=${encodeURIComponent(searchQuery)}`;
     await page.goto(searchURL, { waitUntil: 'networkidle2' });
 
     await page.waitForSelector('.jobs-search__results-list');
@@ -32,9 +31,12 @@ const searchURL = `https://www.linkedin.com/jobs/search?keywords=${encodeURIComp
                 skillsNeeded,
                 applicationLink
             });
-            return joblist;
+        });
+
+        return jobList;
     });
-    
-    
-    });
+
+    await browser.close();
+
+    fs.writeFileSync('jobs.json', JSON.stringify(jobs, null, 2));
 }
