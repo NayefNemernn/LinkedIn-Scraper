@@ -40,3 +40,7 @@ async function scrapeJobs(searchQuery) {
 
     fs.writeFileSync('jobs.json', JSON.stringify(jobs, null, 2));
 }
+
+scrapeJobs('MLOps')
+    .then(() => console.log('Scraping completed. Data saved to jobs.json'))
+    .catch(err => console.error('Error:', err));
